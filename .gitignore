@@ -1,0 +1,58 @@
+# Environment files
+.env
+.env.local
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv/
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# SSL Certificates (sensitive)
+*.pem
+*.key
+*.crt
+*.csr
+
+# Backup files
+*.backup
+*.bak
+*.old
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# SSH Keys (never commit these!)
+ssh_keys/
+*.rsa
+*.ed25519
+id_rsa*
+id_ed25519*
+
+# Configuration with passwords
+configs/production/
+configs/secrets/
