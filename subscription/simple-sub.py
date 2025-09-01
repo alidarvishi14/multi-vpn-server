@@ -21,8 +21,8 @@ def subscription(user):
     configs = []
     
     for server in SERVERS:
-        # Simple VLESS URL without encryption
-        vless_url = f"vless://{CLIENT_ID}@{server['host']}:{server['port']}?encryption=none&type=tcp#{server['name']}"
+        # VLESS URL with TLS encryption
+        vless_url = f"vless://{CLIENT_ID}@{server['host']}:{server['port']}?encryption=none&security=tls&sni=freedomacrossborders.shop&alpn=h2%2Chttp%2F1.1&type=tcp#{server['name']}"
         configs.append(vless_url)
     
     # Join configs and base64 encode
@@ -37,7 +37,7 @@ def subscription_raw(user):
     configs = []
     
     for server in SERVERS:
-        vless_url = f"vless://{CLIENT_ID}@{server['host']}:{server['port']}?encryption=none&type=tcp#{server['name']}"
+        vless_url = f"vless://{CLIENT_ID}@{server['host']}:{server['port']}?encryption=none&security=tls&sni=freedomacrossborders.shop&alpn=h2%2Chttp%2F1.1&type=tcp#{server['name']}"
         configs.append(vless_url)
     
     return Response('\n'.join(configs), mimetype='text/plain')

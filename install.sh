@@ -221,7 +221,12 @@ configure_vless() {
         echo "CLIENT_ID=$CLIENT_ID" >> .env
     fi
     
-    # Add VLESS configuration to X-UI database
+    # Generate SSL certificate for VPN if not exists
+    if [ ! -f /etc/letsencrypt/live/$MAIN_DOMAIN/fullchain.pem ]; then
+        certbot certonly --standalone -d $MAIN_DOMAIN --non-interactive --agree-tos --email $SSL_EMAIL
+    fi
+    
+    # Add VLESS configuration to X-UI database with TLS
     sqlite3 /etc/x-ui/x-ui.db << EOF
 DELETE FROM inbounds WHERE remark='$SERVER_NAME-VLESS';
 INSERT INTO inbounds (
@@ -231,7 +236,7 @@ INSERT INTO inbounds (
     1, 0, 0, 0, '$SERVER_NAME-VLESS', 1, 0, '',
     $VPN_PORT, 'vless',
     '{"clients":[{"id":"$CLIENT_ID","email":"user@$SERVER_NAME","flow":"","limitIp":0,"totalGB":0,"expiryTime":0,"enable":true}],"decryption":"none","fallbacks":[]}',
-    '{"network":"tcp","security":"none","tcpSettings":{"acceptProxyProtocol":false,"header":{"type":"none"}}}',
+    '{"network":"tcp","security":"tls","tlsSettings":{"serverName":"$MAIN_DOMAIN","certificates":[{"certificateFile":"/etc/letsencrypt/live/$MAIN_DOMAIN/fullchain.pem","keyFile":"/etc/letsencrypt/live/$MAIN_DOMAIN/privkey.pem"}],"alpn":["h2","http/1.1"]},"tcpSettings":{"acceptProxyProtocol":false,"header":{"type":"none"}}}',
     'inbound-vless-$VPN_PORT',
     '{"enabled":true,"destOverride":["http","tls"]}'
 );
