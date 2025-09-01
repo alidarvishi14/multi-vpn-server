@@ -73,11 +73,26 @@ install_dependencies() {
 install_xui() {
     echo -e "${GREEN}Installing X-UI panel...${NC}"
     
-    # Download and install X-UI
-    wget -O /tmp/x-ui-install.sh https://raw.githubusercontent.com/alireza0/x-ui/master/install.sh
+    # Copy X-UI from package
+    cp -r x-ui /usr/local/
+    chmod +x /usr/local/x-ui/x-ui
+    chmod +x /usr/local/x-ui/x-ui.sh
     
-    # Auto-answer installation prompts
-    echo -e "y\n$PANEL_PORT\n$XRAY_USERNAME\n$XRAY_PASSWORD\n" | bash /tmp/x-ui-install.sh
+    # Create X-UI database directory
+    mkdir -p /etc/x-ui
+    
+    # Set up X-UI service
+    cp x-ui/x-ui.service /etc/systemd/system/
+    sed -i "s|/usr/local/x-ui/|/usr/local/x-ui/|g" /etc/systemd/system/x-ui.service
+    
+    # Initialize X-UI with credentials
+    /usr/local/x-ui/x-ui setting -username $XRAY_USERNAME -password $XRAY_PASSWORD
+    /usr/local/x-ui/x-ui setting -port $PANEL_PORT
+    
+    # Enable and start service
+    systemctl daemon-reload
+    systemctl enable x-ui
+    systemctl start x-ui
     
     echo -e "${GREEN}X-UI installed on port $PANEL_PORT${NC}"
 }

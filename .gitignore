@@ -20,6 +20,11 @@ logs/
 *.sqlite
 *.sqlite3
 
+# Large binary files (X-UI binaries are included in repo)
+# Uncomment if you want to exclude them:
+# x-ui/x-ui
+# x-ui/bin/xray-linux-amd64
+
 # SSL Certificates (sensitive)
 *.pem
 *.key
