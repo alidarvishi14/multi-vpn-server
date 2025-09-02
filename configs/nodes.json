@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Finland",
+    "host": "freedomacrossborders.shop",
+    "port": 8443,
+    "region": "EU",
+    "capacity": 1000
+  },
+  {
+    "name": "Bahrain",
+    "host": "bahrain.freedomacrossborders.shop",
+    "port": 8443,
+    "region": "ME",
+    "capacity": 500
+  }
+]
