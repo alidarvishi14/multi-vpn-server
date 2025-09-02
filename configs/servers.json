@@ -1,0 +1,33 @@
+{
+  "servers": [
+    {
+      "name": "Finland",
+      "ip": "46.62.146.210",
+      "domain": "freedomacrossborders.shop",
+      "vpn_port": 8443,
+      "panel_port": 54321,
+      "panel_path": "lYJu",
+      "admin_user": "vpnadmin",
+      "uuid": "3b331a0b-fe16-4c0a-9e25-26ba0ac6f57b",
+      "location": "Helsinki",
+      "provider": "Hetzner"
+    },
+    {
+      "name": "Bahrain",
+      "ip": "154.205.146.151",
+      "vpn_port": 8443,
+      "panel_port": 54321,
+      "panel_path": "c1oa8ntMDtKqtLG",
+      "admin_user": "UB3ey2UtgS",
+      "uuid": "3b331a0b-fe16-4c0a-9e25-26ba0ac6f57b",
+      "location": "Manama",
+      "provider": "Local ISP"
+    }
+  ],
+  "global_settings": {
+    "protocol": "vless",
+    "encryption": "none",
+    "network": "tcp",
+    "default_port": 8443
+  }
+}

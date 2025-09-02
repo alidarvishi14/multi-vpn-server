@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  x-ui:
+    image: alireza7/x-ui:latest
+    container_name: x-ui
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./data/x-ui/db:/etc/x-ui
+      - ./data/x-ui/cert:/root/cert
+    environment:
+      - XRAY_VMESS_AEAD_FORCED=false
+    command: ["x-ui"]
+
+  subscription:
+    build:
+      context: ./subscription
+      dockerfile: Dockerfile
+    container_name: vpn-subscription
+    restart: unless-stopped
+    ports:
+      - "5556:5556"
+    volumes:
+      - ./subscription:/app
+      - ./configs/nodes.json:/app/nodes.json
+      - ./configs/users.json:/app/users.json
+    environment:
+      - FLASK_ENV=production
+      - SUB_PORT=5556
+    depends_on:
+      - x-ui
+
+  nginx:
+    image: nginx:alpine
+    container_name: vpn-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./configs/nginx:/etc/nginx/conf.d
+      - ./data/letsencrypt:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    depends_on:
+      - subscription
+
+  certbot:
+    image: certbot/certbot
+    container_name: vpn-certbot
+    volumes:
+      - ./data/letsencrypt:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  # Optional monitoring with Prometheus and Grafana
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: vpn-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./configs/prometheus:/etc/prometheus
+      - ./data/prometheus:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    profiles:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: vpn-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+      - ./configs/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./configs/grafana/datasources:/etc/grafana/provisioning/datasources
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    profiles:
+      - monitoring
+
+volumes:
+  x-ui-db:
+  x-ui-cert:
+  letsencrypt:
+  certbot:
+  prometheus-data:
+  grafana-data:
+
+networks:
+  default:
+    name: vpn-network
+    driver: bridge

@@ -1,0 +1,24 @@
+[Unit]
+Description=Scalable VPN Subscription Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/multi-vpn-server/subscription
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=/usr/bin/python3 /opt/multi-vpn-server/subscription/scalable-sub.py
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Security settings (optional, uncomment to enable)
+# NoNewPrivileges=true
+# PrivateTmp=true
+# ProtectSystem=strict
+# ProtectHome=true
+# ReadWritePaths=/opt/multi-vpn-server/subscription
+
+[Install]
+WantedBy=multi-user.target

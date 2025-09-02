@@ -1,0 +1,29 @@
+[Unit]
+Description=X-UI VPN Management Panel
+After=network.target syslog.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/usr/local/x-ui
+ExecStart=/usr/local/x-ui/x-ui
+Restart=always
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+
+# Environment variables
+Environment="XRAY_VMESS_AEAD_FORCED=false"
+
+# Resource limits
+LimitNOFILE=1000000
+LimitNPROC=500
+LimitCORE=1000000000
+
+# Timeouts
+TimeoutStartSec=60
+TimeoutStopSec=20
+
+[Install]
+WantedBy=multi-user.target

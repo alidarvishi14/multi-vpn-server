@@ -1,0 +1,2 @@
+{% for node in nodes %}vless://{{ node.uuid }}@{{ node.host }}:{{ node.port }}?encryption=none&type=tcp#{{ node.name }}
+{% endfor %}
