@@ -1,0 +1,94 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Project specific
+*.log
+logs/
+*.db
+*.sqlite
+.env.local
+.env.*.local
+/data/
+/backups/
+/vpn-backups/
+
+# Documentation
+*.md
+docs/
+LICENSE
+CONTRIBUTING.md
+
+# Tests
+tests/
+test_*.py
+*_test.py
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+*.old
+
+# SSH keys (security)
+ssh_keys/
+*.pem
+*.key
+*.crt
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Node modules (if any)
+node_modules/
+
+# Archives
+*.tar.gz
+*.zip
+*.rar
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Development
+.env.development
+.env.test

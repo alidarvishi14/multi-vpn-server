@@ -1,0 +1,14 @@
+[Unit]
+Description=Run VPN Auto Update every 5 minutes
+Requires=vpn-auto-update.service
+
+[Timer]
+# Run every 5 minutes
+OnCalendar=*:0/5
+# Run immediately on timer activation
+OnActiveSec=0
+# Continue running even after reboot
+Persistent=true
+
+[Install]
+WantedBy=timers.target
